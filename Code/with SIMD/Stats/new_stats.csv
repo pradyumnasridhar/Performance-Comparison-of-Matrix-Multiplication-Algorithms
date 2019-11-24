@@ -1,0 +1,62 @@
+Processor	Intel(R) Core(TM) i7-4700MQ CPU @ 2.40GHz
+Clock Speed	2.34 GHz
+Cores	4
+Threads	8
+L2 Cache	256 KB Per Core
+L3 Cache	6.00 MB
+
+
+16
+brute_force_multiplication	0.000000
+divide_and_conquer	0.000000
+divide_and_conquer_parallel	0.000000
+strassens	0.000000
+strassens_parallel	0.000000
+32
+brute_force_multiplication	0.000000
+divide_and_conquer	0.000000
+divide_and_conquer_parallel	0.000000
+strassens	0.000000
+strassens_parallel	0.000000
+64
+brute_force_multiplication	0.000000
+divide_and_conquer	0.000000
+divide_and_conquer_parallel	0.000000
+strassens	0.015000
+strassens_parallel	0.000000
+128
+brute_force_multiplication	0.016000
+divide_and_conquer	0.000000
+divide_and_conquer_parallel	0.015000
+strassens	0.000000
+strassens_parallel	0.016000
+256
+brute_force_multiplication	0.038000
+divide_and_conquer	0.078000
+divide_and_conquer_parallel	0.022000
+strassens	0.047000
+strassens_parallel	0.016000
+512
+brute_force_multiplication	0.305000
+divide_and_conquer	0.511000
+divide_and_conquer_parallel	0.125000
+strassens	0.348000
+strassens_parallel	0.100000
+1024
+brute_force_multiplication	2.391000
+divide_and_conquer	4.116000
+divide_and_conquer_parallel	1.098000
+strassens	2.438000
+strassens_parallel	0.721000
+2048
+brute_force_multiplication	18.810000
+divide_and_conquer	32.669000
+divide_and_conquer_parallel	10.854000
+strassens	18.079000
+strassens_parallel	5.532000
+4096
+brute_force_multiplication	169.548000
+divide_and_conquer	302.332000
+divide_and_conquer_parallel	85.891000
+strassens	123.714000
+strassens_parallel	45.819000

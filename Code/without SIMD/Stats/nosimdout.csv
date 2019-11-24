@@ -1,0 +1,62 @@
+Processor	Intel(R) Core(TM) i5-6600K CPU @ 3.50GHz	
+Clock Speed	3.42 GHz	
+Cores	4
+Threads	4
+L2 Cache	1024 KB Per Core	
+L3 Cache	6.00 MB	
+
+
+16
+brute_force_multiplication	0.000000
+divide_and_conquer	0.000000
+divide_and_conquer_parallel	0.001000
+strassens	0.000000
+strassens_parallel	0.000000
+32
+brute_force_multiplication	0.000000
+divide_and_conquer	0.000000
+divide_and_conquer_parallel	0.000000
+strassens	0.001000
+strassens_parallel	0.000000
+64
+brute_force_multiplication	0.001000
+divide_and_conquer	0.001000
+divide_and_conquer_parallel	0.001000
+strassens	0.001000
+strassens_parallel	0.000000
+128
+brute_force_multiplication	0.012000
+divide_and_conquer	0.009000
+divide_and_conquer_parallel	0.003000
+strassens	0.009000
+strassens_parallel	0.004000
+256
+brute_force_multiplication	0.095000
+divide_and_conquer	0.071000
+divide_and_conquer_parallel	0.021000
+strassens	0.055000
+strassens_parallel	0.021000
+512
+brute_force_multiplication	0.992000
+divide_and_conquer	0.603000
+divide_and_conquer_parallel	0.158000
+strassens	0.421000
+strassens_parallel	0.133000
+1024
+brute_force_multiplication	12.237000
+divide_and_conquer	4.684000
+divide_and_conquer_parallel	1.280000
+strassens	2.716000
+strassens_parallel	0.791000
+2048
+brute_force_multiplication	116.432000
+divide_and_conquer	37.825000
+divide_and_conquer_parallel	10.170000
+strassens	19.017000
+strassens_parallel	5.334000
+4096
+brute_force_multiplication	984.138000
+divide_and_conquer	337.613000
+divide_and_conquer_parallel	88.480000
+strassens	138.122000
+strassens_parallel	36.717000

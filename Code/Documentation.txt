@@ -1,0 +1,231 @@
+Algorithms:
+	Standard inner product based row-col multiplication algorithm (Brute force Method)
+	Divide-and-Conquer based multiplication algorithm O(n^3)
+	Strassen's recursive Divide-and-Conquer algorithm
+	Parallelized Divide-and-Conquer multiplication algorithm O(n^3)
+	Parallelized Strassen's recursive Divide-and-Conquer algorithm
+
+Hardware:
+	Processor1	Intel(R) Core(TM) i7-4700MQ CPU @ 2.40GHz			
+	Clock Speed	2.34 GHz			
+	Cores	4			
+	Threads	8			
+	L2 Cache	256 KB Per Core			
+	L3 Cache	6.00 MB			
+
+	Processor2	Intel(R) Core(TM) i5-6600K CPU @ 3.50GHz			
+	Clock Speed	3.42 GHz			
+	Cores	4			
+	Threads	4			
+	L2 Cache	1024 KB Per Core			
+	L3 Cache	6.00 MB			
+
+
+Files: 
+	Source.c
+	StrassensMatrixMultiplication.c
+	strassens.h
+
+No. of lines of code:
+	860
+
+	Source.c 							: 719
+	StrassensMatrixMultiplication.c 	: 92
+	strassens.h 						: 49
+
+Headers used:
+	stdio.h
+	stdlib.h
+	time.h
+	pthread.h
+	windows.h
+	string.h
+	x86intrin.h
+	strassens.h
+
+Static/Global variables:
+	ONLY_STATS(static in StrassensMatrixMultiplication)
+	MIN_NUM(static in StrassensMatrixMultiplication)
+	MAX_NUM(static in StrassensMatrixMultiplication)
+
+Command-line arguments:
+	ONLY_STATS: true/false
+		default value: false
+
+		display only statistics as csv.
+		(optional argument)
+	
+	MIN_NUM: integer
+		default: 0
+
+		minimum value of the random numbers to be generated for matrix-multiplication.
+		(optional argument)
+
+	MAX_NUM: integer
+		default: 100
+
+		maximum value of the random numbers to be generated for matrix-multiplication.
+		(optional argument)
+
+User-defined types: 
+	matrix: 
+		encapulates the attributes of a matrix, respresented as an array of pointers, pointing to arrays (2D-array).
+		contains:
+			 row_size: integer
+			 col_size: integer
+			 mat: a pointer to the 2D array (pointer to pointer)
+	
+	parallel_params:
+		encapulates the parameters to be passed to the thread function, as void*
+		contains:
+			const matrix* one: first matrix (const => used as read-only)
+			const matrix* two: second matrix (const => used as read-only)
+			x1: offset x of first matrix
+			y1: offset y of first matrix
+			x2: offset x of second matrix
+			y2: offset y of second matrix
+			dimension: dimension of both matrices (assumed to be same for both matrices)
+
+	parallel_params_mutable:
+		encapulates the parameters to be passed to the thread function, as void*.
+		difference between parallel_params and parallel_params_mutable:
+			matrices one and two are not const.
+
+			sub-matrices of matrix one and two need to be passed to the thread function,
+			but in certain cases the entire matrix needs to be passed. Since the thread function
+			is common for all threads, to avoid copying the matrix, a reference to one and two is passed.
+			But the const qualifier cannot be propogated. (Throws a warning).
+
+Functions:
+	read_matrix
+		parameters: row size (int), column size (int)
+		
+		returns: pointer to matrix
+
+		Reads row size*column size number of values from stdin and creates a new matrix.
+
+	display_matrix
+		parameters: pointer to const matrix
+		
+		returns: void
+
+		Displays the matrix. Floating-point values are displayed upto 3 decimal values.
+		Columns are separated by tabs. Rows are separated by newlines.
+
+	output_to_file
+		parameters: pointer to const matrix, path (pointer to const char pointer)
+		
+		returns: void
+
+		Opens the file in Write mode and writes the matrix to file (same format as that of display_matrix).
+	
+	free_matrix
+		parameters: pointer to matrix
+		
+		returns: void
+
+		Recursively frees the memory allocated for the matrix
+
+	generate_random_matrix
+		parameters: row size (int), column size (int), minimum value (const int), maximum value (const int)
+		
+		returns: pointer to matrix
+
+		Generates a matrix with the specified attributes, containing pseudo-random values within the range(MIN,MAX).
+		Uses time to generate the pseudo-random values
+		Returns NULL if MIN is lesser than MAX.
+
+	get_submatrix
+		parameters: pointer to const matrix, x (int), y (int), dimension (int)
+		
+		returns: pointer to matrix
+
+		Creates a new matrix, which is the submatrix of the given matrix, with 0,0 at x,y and of the given dimension.
+
+	brute_force_multiplication
+		paramenters: pointer to const matrix one, pointer to const matrix two
+		
+		returns: pointer to matrix 
+
+		Performs matrix multiplication using the brute-force approach.
+
+	brute_force_multiplication_with_simd
+		paramenters: pointer to const matrix one, pointer to const matrix two
+		
+		returns: pointer to matrix 
+
+		Performs matrix multiplication using the brute-force approach, with SIMD "optimization". But due to 
+		matrix copying operations, performs almost comparable to (sometimes slower than) brute force without using SIMD.
+		Uses AVX2.  
+		Note: commented as it is not portable (uses calls specific to the compiler and hardware architecture).
+
+	divide_and_conquer_inner
+		parameters: pointer to const matrix one, pointer to const matrix two, offset x of matrix one (int), offset y of matrix one (int), offset x of matrix two (int), offset y of matrix two (int), dimension of the matricies(int)
+		
+		returns: pointer to matrix 
+
+		Performs matrix multiplication using the divide-and-conquer approach.
+		Uses multiple recursion(8 recursive calls each with the dimension halved).
+		Upon reaching the base case(dimension: 16x16), performs brute force multiplication
+
+	divide_and_conquer
+		parameters: pointer to const matrix one, pointer to const matrix two
+
+		returns: pointer to matrix
+
+		A wrapper function for divide_and_conquer_inner.
+		Calls divide_and_conquer_inner, with all offsets set to 0 and with the given dimension (one and two assumed to be square matrices).
+
+	divide_and_conquer_parallel_inner
+		parameters: void pointer (pointer to parallel_params)
+
+		returns: void pointer (pointer to matrix)
+
+		This is the thread-function for divide_and_conquer_parallel. Calls divide_and_conquer_inner, with the appropriate parameters, got by casting the void pointer to parallel_params.
+		Expects a single parameter of type parallel_params.
+		Returns a pointer to the product matrix, got from divide_and_conquer_inner, casted to a void pointer
+
+	divide_and_conquer_parallel
+		parameters: pointer to const matrix one, pointer to const matrix two
+
+		returns: pointer to matrix
+
+		Implemntaion similar to that of divide_and_conquer_inner, but makes use of multi-threading.
+		Number of threads created is equal to the number of cores on the host system (capped to a maximum of 8).
+		Each thread is given one recursive call.
+		Uses pthreads.
+
+	strassens_inner:
+		parameters: pointer to const matrix one, pointer to const matrix two, offset x of matrix one (int), offset y of matrix one (int), offset x of matrix two (int), offset y of matrix two (int), dimension of the matricies(int)
+		
+		returns: pointer to matrix 
+
+		Performs matrix multiplication using the strassen's algorithm.
+		Uses multiple recursion(7 recursive calls each with the dimension halved).
+		Upon reaching the base case(dimension: 16x16), performs brute force multiplication
+
+	strassens
+		parameters: pointer to const matrix one, pointer to const matrix two
+
+		returns: pointer to matrix
+
+		A wrapper function for strassens_inner.
+		Calls strassens_inner, with all offsets set to 0 and with the given dimension (one and two assumed to be square matrices).
+
+	strassens_parallel_inner
+		parameters: void pointer (pointer to parallel_params)
+
+		returns: void pointer (pointer to matrix)
+
+		This is the thread-function for strassens_parallel. Calls strassens_inner, with the appropriate parameters, got by casting the void pointer to parallel_params.
+		Expects a single parameter of type parallel_params.
+		Returns a pointer to the product matrix, got from divide_and_conquer_inner, casted to a void pointer
+
+	strassens_parallel
+		parameters: pointer to const matrix one, pointer to const matrix two
+
+		returns: pointer to matrix
+
+		Implemntaion similar to that of strassens_inner, but makes use of multi-threading.
+		Number of threads created is fixed to 7, one for each recursive call.
+		Uses pthreads.

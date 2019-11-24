@@ -1,0 +1,8 @@
+tool to check which SIMD instructions are supported (windows)
+	http://www.cpuid.com/softwares/cpu-z.html
+
+
+Header files:
+	http://stackoverflow.com/questions/11228855/header-files-for-simd-intrinsics
+Intel SIMD intrinsics documentation:
+	https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=3219,3247,4513,384,2083,2085&techs=AVX2&cats=Load

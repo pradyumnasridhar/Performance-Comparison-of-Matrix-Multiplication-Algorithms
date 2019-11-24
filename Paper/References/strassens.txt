@@ -1,0 +1,2 @@
+http://www.geeksforgeeks.org/strassens-matrix-multiplication/
+https://en.wikipedia.org/wiki/Strassen_algorithm
