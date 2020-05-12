@@ -1,4 +1,4 @@
-<font size="12"> Performance comparision of Matrix Multiplication Algorithms</font>
+<font size="12"> Performance comparison of Matrix Multiplication Algorithms</font>
 
 <font size="2">September 2016</font>
 
